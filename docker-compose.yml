@@ -1,5 +1,8 @@
 version: "3.8"
 
+volumes:
+  postgres-data:
+
 services:
   ui:
     build: ui

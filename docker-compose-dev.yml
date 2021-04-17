@@ -3,9 +3,30 @@ version: "3.8"
 volumes:
   ui-dist:
 
+  postgres-data:
+
 services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=vortex
+  scraper:
+    build: scraper
+    links:
+      - postgres
+    ports:
+      - "3334:3334"
+  server:
+    build: server
+    links:
+      - postgres
   ui:
     build: ui
+    links:
+      - "server:server"
     ports:
       - "127.0.0.1:3000:80"
     volumes:
